@@ -1,7 +1,7 @@
 {{ if or (and .IsHome .Site.Params.displayFooterInHome) (and (not .IsHome) (.Site.Params.displayFooter | default .Site.Params.enableFooter)) }}
     <footer id="footer" class="footer">
         <div class="footer-inner">
-            <div class="site-info">
+            <div class="site-info" style="display:inline;">
               {{- if .Site.Params.displayCopyleftSymbol -}}
                   <span class="copyleft-symbol">🄯</span>&nbsp;
               {{- end -}}
@@ -23,15 +23,17 @@
               {{- .Site.Author.name -}}
             </div>
 
+            {{- if .Site.Params.displaySiteCopyright }}
+                {{- $raw := .Site.Copyright -}}
+                <div class="site-copyright" style="display:inline;">,&nbsp;{{ partial "utils/markdownify.html" (dict "$" $ "raw" $raw "isContent" false) }}</div>
+                {{- end }}
+
             {{- if .Site.Params.displayPoweredBy }}
-                {{- $raw := `Powered by [Hugo](https://github.com/gohugoio/hugo) | Theme is [MemE](https://github.com/reuixiy/hugo-theme-meme)` -}}
+                {{- $raw := `Powered by [Hugo](https://github.com/gohugoio/hugo) & Themed by [MemE](https://github.com/reuixiy/hugo-theme-meme)` -}}
                 <div class="powered-by">{{ partial "utils/markdownify.html" (dict "$" $ "raw" $raw "isContent" false) }}</div>
             {{- end }}
 
-            {{- if .Site.Params.displaySiteCopyright }}
-                {{- $raw := .Site.Copyright -}}
-                <div class="site-copyright">{{ partial "utils/markdownify.html" (dict "$" $ "raw" $raw "isContent" false) }}</div>
-            {{- end }}
+
 
             {{- with .Site.Params.customFooter }}
                 {{- $raw := . -}}
